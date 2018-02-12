@@ -9,7 +9,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/")
 # finding Lua
 #find_package( Lua REQUIRED )
 #include_directories ( ${LUA_INCLUDE_DIR} )
-# ÕâÑùÊ¹ÓÃÎŞ·¨ÓÃµ½×Ó CMakeLists.txt ÖĞµÄ±äÁ¿ ¸ü¸ÄÎª include .cmake
+# è¿™æ ·ä½¿ç”¨æ— æ³•ç”¨åˆ°å­ CMakeLists.txt ä¸­çš„å˜é‡ æ›´æ”¹ä¸º include .cmake
 #if (NOT TARGET lua)
 #    add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/lua_dirty  build_liblua)
 #endif ()

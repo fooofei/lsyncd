@@ -2,13 +2,20 @@
 project( Lsyncd )
 cmake_minimum_required( VERSION 2.8 )
 set( LSYNCD_VERSION 2.2.2 )
-set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/" )
+#set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/" )
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/")
 
 
 # finding Lua
-find_package( Lua REQUIRED )
-include_directories ( ${LUA_INCLUDE_DIR} )
+#find_package( Lua REQUIRED )
+#include_directories ( ${LUA_INCLUDE_DIR} )
+# 这样使用无法用到子 CMakeLists.txt 中的变量 更改为 include .cmake
+#if (NOT TARGET lua)
+#    add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/lua_dirty  build_liblua)
+#endif ()
 
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/lua_dirty")
+include(liblua)
 
 # setting Lsyncd sources
 set( LSYNCD_SRC lsyncd.c runner.c defaults.c )
@@ -47,13 +54,13 @@ include_directories("${PROJECT_BINARY_DIR}")
 # also called "runner"
 add_custom_command( OUTPUT runner.c
 	COMMAND ${CMAKE_COMMAND} -E echo "Generating built-in runner linkable"
-	COMMAND ${LUA_EXECUTABLE} ${PROJECT_SOURCE_DIR}/bin2carray.lua runner.out runner runner.c
+	COMMAND ${LUA_EXECUTABLE} ${CMAKE_CURRENT_LIST_DIR}/bin2carray.lua runner.out runner runner.c
 	DEPENDS runner.out
 )
 
 # this supposes the Lua compiler 'luac' is sitting right next to the Lua interpreter 'lua'
 add_custom_command( OUTPUT runner.out
-	COMMAND ${CMAKE_COMMAND} -E echo "Compiling built-in runner"
+	COMMAND ${CMAKE_COMMAND} -E echo "Compiling built-in runner use ${LUA_COMPILER}"
 	COMMAND ${LUA_COMPILER} -o runner.out ${PROJECT_SOURCE_DIR}/lsyncd.lua
 	DEPENDS ${PROJECT_SOURCE_DIR}/lsyncd.lua
 )
@@ -103,7 +110,7 @@ add_custom_target( tests
 
 # compiling and linking it all together
 add_executable( lsyncd ${LSYNCD_SRC} )
-target_link_libraries( lsyncd ${LUA_LIBRARIES} )
+target_link_libraries( lsyncd lua)
 
-install( TARGETS lsyncd RUNTIME DESTINATION bin )
-install( FILES doc/manpage/lsyncd.1 DESTINATION man )
+#install( TARGETS lsyncd RUNTIME DESTINATION bin )
+#install( FILES doc/manpage/lsyncd.1 DESTINATION man )

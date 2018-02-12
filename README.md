@@ -44,3 +44,23 @@ Besides the usual disclaimer in the license, we want to specifically emphasize t
 
 --------
 20180112 修改为不依赖安装 lua 的版本，下载 repo 之后编译即可。
+
+还没研究出来怎样配置。 
+
+进展： 1 启动 
+```
+$ ./lsyncd -rsync ../tests  ../tests2
+13:36:38 Normal: --- Startup, daemonizing ---
+```
+然后什么都看不到。
+
+更改 `lsyncd.c` 93 行， `setting .nodaemon = true`, 不让以 daemon 启动。
+
+继续报错
+```
+$ ./lsyncd -rsync ../tests  ../tests2
+13:39:18 Normal: --- Startup ---
+13:39:18 Normal: recursive startup rsync: xxx/lsyncd/tests/ -> ../tests2/
+13:39:18 Error: Failed executing [ /usr/bin/rsync ]!
+```
+更改 `default-rsync.lua` 文件 675 行  `	binary        = '/usr/local/bin/rsync',`  还是不行。

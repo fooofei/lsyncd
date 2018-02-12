@@ -41,3 +41,6 @@ Disclaimer
 ----------
 Besides the usual disclaimer in the license, we want to specifically emphasize that the authors, and any organizations the authors are associated with, can not be held responsible for data-loss caused by possible malfunctions of Lsyncd.
 
+
+--------
+20180112 修改为不依赖安装 lua 的版本，下载 repo 之后编译即可。
